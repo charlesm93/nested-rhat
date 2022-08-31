@@ -1,6 +1,6 @@
 # Nested $\widehat R$: supplemental code
 
-Supplemental code for the [preprint](https://arxiv.org/abs/2110.13017) Nested $\widehat R$: Assessing the convergence of Markov chains Monte Carlo when running many short chains by Charles Margossian, Matt Hoffman, Pavel Sountsov, Lionel Riou-Durand, Aki Vehtari, and Andrew Gelman.
+Supplemental code for the [preprint](https://arxiv.org/abs/2110.13017) _Nested_ $\widehat R$: _Assessing the convergence of Markov chains Monte Carlo when running many short chains_ by Charles Margossian, Matt Hoffman, Pavel Sountsov, Lionel Riou-Durand, Aki Vehtari, and Andrew Gelman.
 
 The Python Colab notebooks can be used to reproduce our numerical experiments. Most of these notebooks are forked from [google-research/nested-rhat](https://github.com/google-research/google-research/tree/master/nested_rhat), which contains the code for the first version of our preprint.
 
