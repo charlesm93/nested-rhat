@@ -1,6 +1,6 @@
 # Nested $\widehat R$: supplemental code
 
-Supplemental code for the preprint [Nested $\widehat R$: Assessing the convergence of Markov chains Monte Carlo when running many short chains](https://arxiv.org/abs/2110.13017) by Charles Margossian, Matt Hoffman, Pavel Sountsov, Lionel Riou-Durand, Aki Vehtari, and Andrew Gelman.
+Supplemental code for the [preprint](https://arxiv.org/abs/2110.13017) Nested $\widehat R$: Assessing the convergence of Markov chains Monte Carlo when running many short chains by Charles Margossian, Matt Hoffman, Pavel Sountsov, Lionel Riou-Durand, Aki Vehtari, and Andrew Gelman.
 
 The Python Colab notebooks can be used to reproduce our numerical experiments. Most of these notebooks are forked from [google-research/nested-rhat](https://github.com/google-research/google-research/tree/master/nested_rhat), which contains the code for the first version of our preprint.
 
@@ -10,11 +10,11 @@ Some of our less computationally intensive experiments are written in R.
 
 ## Figures and how to reproduce them
 
-* Figure 2: _Example on Banana problem_. Use `rhat_locker.ipynb`.
-* Figure 3: _Variance of Monte Carlo estimators_. Use `Nested_R_hat.ipynb`.
-* Figures 4, 11, 12: _Variance of $\mathfrak n \widehat B / \mathfrak n \widehat W$. Use `variance_simulation.R`.
-* Figures 5, 6, 7, 8, 13, 14: _Numerical experiments_ (Section 5). Use `nRhat_convergence.ipynb`, see details.
-* Figure 9. _$(\delta, \delta')$-reliability_. Use `Bias-Variance-MCMC.ipynb`.
+* Figure 2: Example on Banana problem. Use `rhat_locker.ipynb`.
+* Figure 3: Variance of Monte Carlo estimators. Use `Nested_R_hat.ipynb`.
+* Figures 4, 11, 12: Variance of $\mathfrak n \widehat B / \mathfrak n \widehat W$. Use `variance_simulation.R`.
+* Figures 5, 6, 7, 8, 13, 14: Numerical experiments (Section 5). Use `nRhat_convergence.ipynb`, see details.
+* Figure 9. $(\delta, \delta')$-reliability. Use `Bias-Variance-MCMC.ipynb`.
 
 ## Details for `nRhat_convergence.ipynb`
 
