@@ -15,6 +15,7 @@ Some of our less computationally intensive experiments are written in R.
 * Figures 4, 11, 12: Variance of $\mathfrak n \widehat B / \mathfrak n \widehat W$. Use `variance_simulation.R`.
 * Figures 5, 6, 7, 8, 13, 14: Numerical experiments (Section 5). Use `nRhat_convergence.ipynb`, see details.
 * Figure 9. $(\delta, \delta')$-reliability. Use `Bias-Variance-MCMC.ipynb`.
+* Figure 10: Upper bound on $\delta$ (Theorem 4): `langevin_simulation.R`
 
 ## Details for `nRhat_convergence.ipynb`
 
