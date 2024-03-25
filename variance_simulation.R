@@ -1,9 +1,13 @@
 
+rm(list = ls())
+gc()
+set.seed(1954)
 
 .libPaths("~/Rlib/")
 library(ggplot2)
 library(ggrepel)
 library(scales)
+library(latex2exp)
 
 #####################################################################
 ## utility functions
@@ -149,9 +153,9 @@ mc_variance_warm <- function(n_sim, K, M, rho, num_warm, sigma2 = 1,
 
 
 #####################################################################
-## simulations
+## simulations (varying the number of initializations and samples)
 
-mu = 124
+mu = 2048  # 124
 K = c(2, 4, 8, 16, 32, 64)
 N = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 rho = 0.5
@@ -173,43 +177,45 @@ plot_data = data.frame(K = factor(rep(K, length(N)),
                        var = mc_variance_vec,
                        N = rep(N, each = length(K)))
 
-plot_data$labels = ifelse(plot_data$N == 10, paste0("K = ", as.character(plot_data_var$K)),
+plot_data$labels = ifelse(plot_data$N == 10, paste0("K = ", as.character(plot_data$K)),
                           NA)
-plot_data$labels[plot_data$K == 2] = NA
-plot_data$labelx = NA
-plot_data$labelx[plot_data$N == 8 & plot_data$K == 2] = "K = 2"
+# plot_data$labels[plot_data$K == 2] = NA
+# plot_data$labelx = NA
+# plot_data$labelx[plot_data$N == 8 & plot_data$K == 2] = "K = 2"
 
 # point plot for comparison
 p <- ggplot(data = plot_data,
             aes(x = N, y = var, color = K)) +
   # geom_point(size = 1.5) + 
-  geom_line() + theme_bw() +
-  ylab("variance") + theme(text = element_text(size = 20)) +
+  geom_line() + geom_point() + theme_bw() +
+  ylab(" ") + xlab("sampling length") +
+  theme(text = element_text(size = 20)) +
   scale_y_continuous(trans='log10') +
   scale_x_continuous(breaks=1:10) +
-  # scale_x_continuous(breaks = pretty_breaks()) +
   theme(legend.position = "None") +
-  geom_label(aes(label = labels), nudge_x = -0.5, nudge_y = 0.0) +
-  geom_label(aes(label = labelx), nudge_x = 0, nudge_y = -0.25)
+  geom_label(aes(label = labels), nudge_x = -0.5, nudge_y = 0.0) # +
+  # geom_label(aes(label = labelx), nudge_x = 0, nudge_y = -0.25)
 
 p
 
 
 #####################################################################
-# Can reframe the problem to not assume stationarity (although
-# we do assume the initialization is drawn from the intialization).
-# Assume the correlation between two subsequent samples is rho.
+## Varying K, the number of initializations.
+# Can reframe the problem to not assume stationarity of the chains 
+# (although we do assume the initialization is drawn from the 
+# stationary dist). Assume the correlation between two subsequent
+# samples is rho.
 
 set.seed(1954)
 
-mu = 128
+mu = 2048 # 128
 K = c(2, 4, 8, 16, 32, 64)
-# K = c(2, 8, 64)
+# K = c(2, 4, 64)
 rho = 0.9
 n_sim = 1e3
 num_warm = 1:50
-fractional = TRUE  # if TRUE computed the fractional variance
-                   # (i.e. standardized by the squared mean of B / W).
+fractional = FALSE  # if TRUE computed the fractional variance
+                    # (i.e. standardized by the squared mean of B / W).
 
 mc_variance_mat = array(NA, dim = c(length(K), length(num_warm), 2))
 
@@ -236,9 +242,11 @@ plot_data = data.frame(K = as.factor(rep(K, 2 * length(num_warm))),
 )
 
 # point plot for comparison
+# NOTE: if fractional = FALSE, fractional variance is not computed.
 p <- ggplot(data = plot_data,
             aes(x = num_warm, y = var, color = K)) +
-  geom_point(size = 0.75, alpha = 0.5) + geom_line(size = 0.5, alpha = 1) + theme_bw() + 
+  geom_point(size = 0.75, alpha = 0.5) +
+  geom_line(linewidth = 0.5, alpha = 1) + theme_bw() + 
   ylab(" ") + xlab("warmup length") +
   theme(text = element_text(size = 20)) +
   scale_y_continuous(trans='log10') +
@@ -255,22 +263,25 @@ plot_data_var$labelx[plot_data_var$num_warm == 50 & plot_data_var$K == 2] = "K =
 
 p <- ggplot(data = plot_data_var,
             aes(x = num_warm, y = var, color = K)) +
-  # geom_point(size = 0.75, alpha = 0.5) + 
+  geom_point(size = 0.75, alpha = 0.5) + 
   geom_line(size = 0.5, alpha = 1) + theme_bw() + 
-  ylab(" ") + xlab("warmup length") +
+  ylab(TeX("variance of $n \\widehat{B} / n \\widehat{W}$")) + xlab("warmup length") +
   theme(text = element_text(size = 20)) +
   scale_y_continuous(trans='log10') +
-  geom_label(aes(label = label), nudge_x = -1.3) +
-  geom_label(aes(label = labelx), nudge_x = -1.3, nudge_y = -0.2) +
+  geom_label(aes(label = label), nudge_x = -2.5) +
+  geom_label(aes(label = labelx), nudge_x = -1.9, nudge_y = -0.2) +
   theme(legend.position="none")
 p
 
+# can use size = 6 for the labels
+
 
 #######################################################################
+## Varying the number of chains.
 # Let's investigate how the variance changes with the number of chains
-# We'll focus on the M = mu / 2, which is the maximum numbner of inits.
+# We'll focus on the M = mu / 2, which is the maximum number of inits.
 
-Mu = c(4,32, 128, 516, 1024, 2048)
+Mu = c(4, 32, 128, 516, 1024, 2048)
 K = Mu / 2
 rho = 0.9
 n_sim = 1e3
@@ -309,8 +320,5 @@ p <- ggplot(data = plot_data_label[plot_data$mu != 4, ],
 
 p <- p + scale_y_continuous(trans='log10') + 
   geom_hline(yintercept = 1e-5, linetype = "dashed") +
-  annotate(geom="text", x = 12, y = 2e-5, label="Asymptotic variance, mu = 128, K = 2")
+  annotate(geom="text", x = 12, y = 2e-5, label="Asymptotic variance, KM = 128, K = 2")
 p
-
-
-
